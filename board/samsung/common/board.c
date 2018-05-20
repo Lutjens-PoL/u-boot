@@ -63,6 +63,11 @@ static int get_boot_mmc_dev(void)
 	return 0;
 }
 
+__weak int exynos_late_init(void)
+{
+	return 0;
+}
+
 #if defined CONFIG_EXYNOS_TMU
 /* Boot Time Thermal Analysis for SoC temperature threshold breach */
 static void boot_temp_check(void)
@@ -227,6 +232,7 @@ int board_late_init(void)
 	int mmcbootdev = get_boot_mmc_dev();
 	char mmcbootdev_str[16];
 
+#ifdef CONFIG_CROS_EC
 	ret = uclass_first_device_err(UCLASS_CROS_EC, &dev);
 	if (ret && ret != -ENODEV) {
 		/* Force console on */
@@ -237,12 +243,13 @@ int board_late_init(void)
 		panic("Cannot init cros-ec device");
 		return -1;
 	}
+#endif
 
 	printf("Boot device: MMC(%u)\n", mmcbootdev);
 	sprintf(mmcbootdev_str, "%u", mmcbootdev);
 	env_set("mmcbootdev", mmcbootdev_str);
 
-	return 0;
+	return exynos_late_init();
 }
 #endif
 
