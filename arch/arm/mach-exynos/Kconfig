@@ -84,6 +84,13 @@ config TARGET_ODROID
 	bool "Exynos4412 Odroid board"
 	select EXYNOS4412
 
+config TARGET_P4NOTE
+	bool "Exynos4412 p4note boards"
+	select SUPPORT_SPL
+	select EXYNOS4412
+	select BOARD_LATE_INIT
+	imply OF_BOARD_SETUP
+
 endchoice
 endif
 
@@ -201,6 +208,7 @@ source "board/samsung/universal_c210/Kconfig"
 source "board/samsung/origen/Kconfig"
 source "board/samsung/trats2/Kconfig"
 source "board/samsung/odroid/Kconfig"
+source "board/samsung/p4note/Kconfig"
 source "board/samsung/arndale/Kconfig"
 source "board/samsung/smdk5250/Kconfig"
 source "board/samsung/smdk5420/Kconfig"

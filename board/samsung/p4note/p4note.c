@@ -1,0 +1,125 @@
+//SPDX-License-Identifier: GPL-2.0+
+/*
+ * Samsung p4note board file
+ * Based on midas board file from Simon Shields <simon@lineageos.org>
+ *
+ * Copyright (c) 2021 Walter Lütjens <lutjens.pol@gmail.com>
+ */
+#include <common.h>
+#include <env.h>
+#include <console.h>
+#include <asm/arch/pinmux.h>
+#include <asm/arch/power.h>
+#include <asm/arch/clock.h>
+#include <asm/arch/gpio.h>
+#include <asm/global_data.h>
+#include <asm/gpio.h>
+#include <fdt_support.h>
+#include <linux/libfdt.h>
+#include <power/regulator.h>
+
+DECLARE_GLOBAL_DATA_PTR;
+
+int get_board_rev(void)
+{
+	return 0;
+}
+
+static void gpio_init(void)
+{
+	/* power and volume keys are externally pulled up */
+	/*
+	 * GPX2[7] - power key. If we don't set pull to none within 8 seconds,
+	 * PMIC thinks power key is being held down and will reset the board.
+	 */
+	gpio_request(EXYNOS4X12_GPIO_X27, "KEY_POWER");
+	gpio_set_pull(EXYNOS4X12_GPIO_X27, S5P_GPIO_PULL_NONE);
+}
+
+#ifdef CONFIG_DEBUG_UART_BOARD_INIT
+void board_debug_uart_init(void)
+{
+	/*
+   * configure uart_sel pin to get UART output.
+   * We have to configure it here to get more info on boot
+   */
+	gpio_cfg_pin(EXYNOS4X12_GPIO_L27, S5P_GPIO_OUTPUT);
+	gpio_set_pull(EXYNOS4X12_GPIO_L27, S5P_GPIO_PULL_NONE);
+  gpio_set_value(EXYNOS4X12_GPIO_L27, 1);
+}
+#endif
+
+#ifdef CONFIG_OF_BOARD_SETUP
+int ft_board_setup(void *blob, struct bd_info *bd)
+{
+	int ret;
+
+	/* we don't want the OS to think we're running under secure firmware */
+
+	int offs = fdt_node_offset_by_compatible(blob, 0, "samsung,secure-firmware");
+	if (offs < 0) {
+		if (offs == -FDT_ERR_NOTFOUND) {
+			printf("%s: no secure firmware node!\n", __func__);
+			return 0;
+		}
+		printf("%s: failed to find secure firmware node: %d\n", __func__, offs);
+		return -EINVAL;
+	}
+
+	/* delete the node */
+
+	ret = fdt_del_node(blob, offs);
+	if (ret < 0) {
+		printf("%s: failed to remove secure firmware node: %d\n", __func__, ret);
+		return -EINVAL;
+	}
+
+	printf("FDT set up for OS %p\n", blob);
+
+	return 0;
+}
+#endif
+
+int exynos_early_init_f(void)
+{
+	return 0;
+}
+
+int exynos_init(void)
+{
+	gpio_init();
+
+  int ret;
+  struct udevice *vddadc;
+
+  /*
+   * we have to enable ADC regulator to prepare device, otherwise
+   * we'll get stmpe811 init error (also breaking up relying drivers
+	 * on ADC) in Linux kernel as it initializes before PMIC driver
+	 * configures regulator
+	 */
+  ret = regulator_get_by_platname("VDD_ADC_3.3V", &vddadc);
+	if (ret) {
+		pr_err("Failed to get VDD_ADC_3.3V: %d\n", ret);
+		return -1;
+	}
+
+  ret = regulator_set_enable(vddadc, true);
+  if (ret) {
+    pr_err("Failed to set VDD_ADC_3.3V to ON: %d\n", ret);
+    return -1;
+  }
+
+	return 0;
+}
+
+int exynos_late_init(void)
+{
+	/* simple hack for now to boot from sd card */
+  printf("Boot device: MMC(%u)\n", 2);
+	env_set("mmcbootdev", "2");
+
+	printf("Booting...\n");
+
+	return 0;
+}
