@@ -1,0 +1,386 @@
+/dts-v1/;
+#include <dt-bindings/gpio/gpio.h>
+#include "exynos4412.dtsi"
+
+/ {
+	model = "Samsung p4note boards based on Exynos4412";
+	compatible = "samsung,p4note", "samsung,exynos4412", "samsung,exynos4";
+
+	aliases {
+		mmc0 = &mshc_0;
+		mmc2 = &sdhci2;
+	};
+
+	chosen {
+		stdout-path = &serial_2;
+	};
+};
+
+&i2c_7 {
+	samsung,i2c-sda-delay = <100>;
+	samsung,i2c-slave-addr = <0x10>;
+	samsung,i2c-max-bus-freq = <400000>;
+	status = "okay";
+
+	max77686: max77686_pmic@9 {
+		compatible = "maxim,max77686";
+		interrupt-parent = <&gpx0>;
+		interrupts = <7 0>;
+		reg = <0x09>;
+		#clock-cells = <1>;
+
+		voltage-regulators {
+			ldo1_reg: LDO1 {
+        regulator-compatible = "LDO1";
+				regulator-name = "ldo1";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo2_reg: LDO2 {
+        regulator-compatible = "LDO2";
+				regulator-name = "ldo2";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo3_reg: LDO3 {
+        regulator-compatible = "LDO3";
+				regulator-name = "VCC_1.8V_AP";
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo4_reg: LDO4 {
+        regulator-compatible = "LDO4";
+				regulator-name = "ldo4";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo5_reg: LDO5 {
+        regulator-compatible = "LDO5";
+				regulator-name = "VCC_1.8V_IO";
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo6_reg: LDO6 {
+        regulator-compatible = "LDO6";
+				regulator-name = "ldo6";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo7_reg: LDO7 {
+        regulator-compatible = "LDO7";
+				regulator-name = "ldo7";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo8_reg: LDO8 {
+        regulator-compatible = "LDO8";
+				regulator-name = "VMIPI_1.0V";
+				regulator-min-microvolt = <1000000>;
+				regulator-max-microvolt = <1000000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-on-in-suspend;
+				};
+			};
+
+			ldo9_reg: LDO9 {
+        regulator-compatible = "LDO9";
+				regulator-name = "VLED_IC_1.9V";
+				regulator-min-microvolt = <1950000>;
+				regulator-max-microvolt = <1950000>;
+        regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo10_reg: LDO10 {
+        regulator-compatible = "LDO10";
+				regulator-name = "VMIPI_1.8V";
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-on-in-suspend;
+				};
+			};
+
+			ldo11_reg: LDO11 {
+        regulator-compatible = "LDO11";
+				regulator-name = "VABB1_1.9V";
+				regulator-min-microvolt = <1950000>;
+				regulator-max-microvolt = <1950000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo12_reg: LDO12 {
+        regulator-compatible = "LDO12";
+				regulator-name = "VUOTG_3.0V";
+				regulator-min-microvolt = <3000000>;
+				regulator-max-microvolt = <3000000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-on-in-suspend;
+				};
+			};
+
+			ldo13_reg: LDO13 {
+        regulator-compatible = "LDO13";
+				regulator-name = "ldo13";
+			};
+
+			ldo14_reg: LDO14 {
+        regulator-compatible = "LDO14";
+				regulator-name = "VABB2_1.9V";
+				regulator-min-microvolt = <1950000>;
+				regulator-max-microvolt = <1950000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo15_reg: LDO15 {
+        regulator-compatible = "LDO15";
+				regulator-name = "ldo15";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo16_reg: LDO16 {
+        regulator-compatible = "LDO16";
+				regulator-name = "ldo16";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			ldo17_reg: LDO17 {
+        regulator-compatible = "LDO17";
+				regulator-name = "ldo17";
+			};
+
+			ldo18_reg: LDO18 {
+        regulator-compatible = "LDO18";
+				regulator-name = "CAM_IO_1.8V";
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+        regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo19_reg: LDO19 {
+        regulator-compatible = "LDO19";
+				regulator-name = "VT_CORE_1.8V";
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+        regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo20_reg: LDO20 {
+        regulator-compatible = "LDO20";
+				regulator-name = "ldo20";
+			};
+
+			ldo21_reg: LDO21 {
+        regulator-compatible = "LDO21";
+				regulator-name = "VTF_2.8V";
+				regulator-min-microvolt = <2800000>;
+				regulator-max-microvolt = <2800000>;
+				maxim,ena-gpios = <&gpy2 0 GPIO_ACTIVE_HIGH>;
+			};
+
+			ldo22_reg: LDO22 {
+        regulator-compatible = "LDO22";
+				regulator-name = "ldo22";
+			};
+
+			ldo23_reg: LDO23 {
+        regulator-compatible = "LDO23";
+				regulator-name = "VDD_ADC_3.3V";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo24_reg: LDO24 {
+        regulator-compatible = "LDO24";
+				regulator-name = "CAM_A2.8V";
+				regulator-min-microvolt = <2800000>;
+				regulator-max-microvolt = <2800000>;
+        regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo25_reg: LDO25 {
+        regulator-compatible = "LDO25";
+				regulator-name = "VLED_3.3V";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+        regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			ldo26_reg: LDO26 {
+        regulator-compatible = "LDO26";
+				regulator-name = "3MP_AF_2.8V";
+				regulator-min-microvolt = <2800000>;
+				regulator-max-microvolt = <2800000>;
+        regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+
+			buck1_reg: BUCK1 {
+        regulator-compatible = "BUCK1";
+				regulator-name = "VDD_MIF";
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <1050000>;
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck2_reg: BUCK2 {
+        regulator-compatible = "BUCK2";
+				regulator-name = "VDD_ARM";
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <1500000>;
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck3_reg: BUCK3 {
+        regulator-compatible = "BUCK3";
+				regulator-name = "VDD_INT";
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <1100000>;
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck4_reg: BUCK4 {
+        regulator-compatible = "BUCK5";
+				regulator-name = "VDD_G3D";
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <1075000>;
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck5_reg: BUCK5 {
+        regulator-compatible = "BUCK5";
+				regulator-name = "buck5";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck6_reg: BUCK6 {
+        regulator-compatible = "BUCK6";
+				regulator-name = "buck6";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck7_reg: BUCK7 {
+        regulator-compatible = "BUCK7";
+				regulator-name = "buck7";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			buck8_reg: BUCK8 {
+        regulator-compatible = "BUCK8";
+				regulator-name = "buck8";
+			};
+
+			buck9_reg: BUCK9 {
+        regulator-compatible = "BUCK9";
+				regulator-name = "3MP_CORE_1.2V";
+				regulator-min-microvolt = <1200000>;
+				regulator-max-microvolt = <1200000>;
+				regulator-always-on;
+				regulator-boot-on;
+
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+		};
+	};
+};
+
+&sdhci2 {
+	samsung,bus-width = <4>;
+	samsung,timing = <1 2 3>;
+	cd-inverted;
+	cd-gpios = <&gpx3 4 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+
+&serial_2 {
+	status = "okay";
+};
+
+&mshc_0 {
+	samsung,bus-width = <8>;
+	samsung,timing = <2 1 0>;
+	samsung,removable = <0>;
+	fifoth_val = <0x203f0040>;
+	bus_hz = <400000000>;
+	div = <0x0>;
+	index = <4>;
+	fifo-depth = <0x80>;
+	status = "okay";
+};

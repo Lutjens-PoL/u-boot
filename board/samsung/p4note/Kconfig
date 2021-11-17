@@ -1,0 +1,14 @@
+if TARGET_P4NOTE
+
+config SYS_BOARD
+	default "p4note"
+	help
+			Samsung Mobile's "p4note" tablet based on Exynos 4412
+
+config SYS_VENDOR
+	default "samsung"
+
+config SYS_CONFIG_NAME
+	default "p4note"
+
+endif

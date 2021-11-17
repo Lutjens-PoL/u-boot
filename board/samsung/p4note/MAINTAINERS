@@ -1,0 +1,6 @@
+Samsung p4note boards based on Exynos4412
+M:	Walter Lütjens <lutjens.pol@gmail.com>
+S:	Maintained
+F:	board/samsung/p4note/
+F:	include/configs/p4note.h
+F:	configs/p4note_defconfig
