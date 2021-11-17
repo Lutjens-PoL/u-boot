@@ -9,7 +9,7 @@
 ####################################
 if [ -z $1 ]
 then
-    echo "usage: ./create_4412_sd_image.sh <output file>"
+    echo "usage: ./create_4412_sd_image.sh <target board> <output file>"
     exit 0
 fi
 
@@ -38,21 +38,21 @@ env_pos=$(($tzsw_pos + $tzsw_size))
 
 ####################################
 echo "Exynos4412 FWBL1 fusing"
-dd if=./p4412_s_fwbl1.bin of=$1 bs=$block_size seek=$fwbl1_pos
+dd if=./p4412_s_fwbl1.bin of=$2 bs=$block_size seek=$fwbl1_pos
 ####################################
 echo "Exynos4412 BL2 fusing"
-dd if=spl/i9300-spl.bin of=$1 bs=$block_size seek=$bl2_pos
+dd if=spl/$1-spl.bin of=$2 bs=$block_size seek=$bl2_pos
 ####################################
 echo "Exynos4412 bootloader fusing"
-dd if=./u-boot.bin of=$1 bs=$block_size seek=$uboot_pos
+dd if=./u-boot.bin of=$2 bs=$block_size seek=$uboot_pos
 ####################################
 echo "Exynos4412 tzsw fusing"
 #dd if=./gcam_tzsw.bin of=$1 bs=$block_size seek=$tzsw_pos
 ####################################
 echo "Filling env with zeroes.."
-dd if=/dev/zero of=$1 bs=$block_size count=$env_size seek=$env_pos
+dd if=/dev/zero of=$2 bs=$block_size count=$env_size seek=$env_pos
 ####################################
 
 sync
 #<Message Display>
-echo "$1 - Exynos4412 U-Boot SD card image is ready."
+echo "$2 - Exynos4412 U-Boot SD card image is ready."
