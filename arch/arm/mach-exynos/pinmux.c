@@ -870,6 +870,9 @@ static int exynos4x12_pinmux_config(int peripheral, int flags)
 	case PERIPH_ID_SDMMC3:
 		debug("SDMMC device %d not implemented\n", peripheral);
 		return -1;
+	case PERIPH_ID_PWM1:
+		gpio_cfg_pin(EXYNOS4X12_GPIO_D01, S5P_GPIO_FUNC(0x2));
+		break;    
 	default:
 		debug("%s: invalid peripheral %d", __func__, peripheral);
 		return -1;
