@@ -628,7 +628,9 @@ static int exynos_fb_probe(struct udevice *dev)
 	struct video_priv *uc_priv = dev_get_uclass_priv(dev);
 	struct exynos_fb_priv *priv = dev_get_priv(dev);
 	struct udevice *panel, *bridge;
+#ifdef CONFIG_DISPLAY
 	struct udevice *dp;
+#endif
 	int ret;
 
 	debug("%s: start\n", __func__);
@@ -650,6 +652,7 @@ static int exynos_fb_probe(struct udevice *dev)
 		return -ENODEV;
 	}
 
+#ifdef CONFIG_DISPLAY
 	ret = uclass_first_device(UCLASS_DISPLAY, &dp);
 	if (ret) {
 		debug("%s: Display device error %d\n", __func__, ret);
@@ -664,6 +667,7 @@ static int exynos_fb_probe(struct udevice *dev)
 		debug("%s: Display enable error %d\n", __func__, ret);
 		return ret;
 	}
+#endif
 
 	/* backlight / pwm */
 	ret = panel_enable_backlight(panel);
