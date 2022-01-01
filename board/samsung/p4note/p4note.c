@@ -82,6 +82,28 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 
 int exynos_early_init_f(void)
 {
+
+	unsigned int i;
+
+	/* lcd_clk & lcd_data24 */
+	for (i = 0; i < 8; i++) {
+		gpio_cfg_pin(EXYNOS4X12_GPIO_F00 + i, S5P_GPIO_FUNC(2));
+		gpio_set_pull(EXYNOS4X12_GPIO_F00 + i, S5P_GPIO_PULL_NONE);
+		gpio_set_drv(EXYNOS4X12_GPIO_F00 + i, S5P_GPIO_DRV_1X);
+		gpio_cfg_pin(EXYNOS4X12_GPIO_F10 + i, S5P_GPIO_FUNC(2));
+		gpio_set_pull(EXYNOS4X12_GPIO_F10 + i, S5P_GPIO_PULL_NONE);
+		gpio_set_drv(EXYNOS4X12_GPIO_F10 + i, S5P_GPIO_DRV_1X);
+		gpio_cfg_pin(EXYNOS4X12_GPIO_F20 + i, S5P_GPIO_FUNC(2));
+		gpio_set_pull(EXYNOS4X12_GPIO_F20 + i, S5P_GPIO_PULL_NONE);
+		gpio_set_drv(EXYNOS4X12_GPIO_F20 + i, S5P_GPIO_DRV_1X);
+	}
+
+	for (i = 0; i < 4; i++) {
+		gpio_cfg_pin(EXYNOS4X12_GPIO_F30 + i, S5P_GPIO_FUNC(2));
+		gpio_set_pull(EXYNOS4X12_GPIO_F30 + i, S5P_GPIO_PULL_NONE);
+		gpio_set_drv(EXYNOS4X12_GPIO_F30 + i, S5P_GPIO_DRV_1X);
+	}
+
 	return 0;
 }
 
