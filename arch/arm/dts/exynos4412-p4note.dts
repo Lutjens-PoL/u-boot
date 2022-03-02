@@ -14,6 +14,72 @@
 	chosen {
 		stdout-path = &serial_2;
 	};
+
+	pwm: pwm@139d0000 {
+		compatible = "samsung,exynos4210-pwm";
+		reg = <0x139d0000 0x1000>;
+		samsung,pwm-outputs = <0>, <1>, <2>, <3>;
+		#pwm-cells = <3>;
+	};
+
+	backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm 1 32768 0>;
+		brightness-levels = <0 100 500 1000 1500 2000 2500 2800>;
+		default-brightness-level = <6>;
+		enable-gpios = <&gpm0 1 GPIO_ACTIVE_HIGH>;
+		power-supply = <&ldo23_reg>;
+	};
+
+	panel_vdd: voltage-regulator-1 {
+		compatible = "regulator-fixed";
+		regulator-name = "LCD_ENABLE";
+		gpio = <&gpc0 1 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+
+	panel: panel {
+		compatible = "simple-panel";
+		power-supply = <&panel_vdd>;
+		backlight = <&backlight>;
+		enable-gpios = <&gpm0 5 GPIO_ACTIVE_HIGH>;
+	};
+
+	fimd@11c00000 {
+		u-boot,dm-pre-reloc;
+		compatible = "samsung,exynos-fimd";
+		reg = <0x11c00000 0xa4>;
+
+		samsung,vl-freq = <60>;
+		samsung,vl-col = <1280>;
+		samsung,vl-row = <800>;
+		samsung,vl-width = <217>;
+		samsung,vl-height = <135>;
+
+		samsung,vl-clkp;
+		samsung,vl-hsp;
+		samsung,vl-vsp;
+		samsung,vl-dp;
+
+		samsung,vl-bpix = <4>;
+
+		samsung,vl-hspw = <16>;
+		samsung,vl-hbpd = <36>;
+		samsung,vl-hfpd = <18>;
+		samsung,vl-vspw = <3>;
+		samsung,vl-vbpd = <16>;
+		samsung,vl-vfpd = <4>;
+		samsung,vl-cmd-allow-len = <0xf>;
+
+		samsung,power-on-delay = <30>;
+		samsung,winid = <3>;
+		samsung,interface-mode = <1>;
+		samsung,dp-enabled = <0>;
+
+		samsung,logo-on = <0>;
+		samsung,rgb-mode = <0>;
+	};
 };
 
 &i2c_7 {

@@ -2,6 +2,7 @@
 #define __P4NOTE_CONFIG_H__
 
 #define CONFIG_EXYNOS4
+#define CONFIG_EXYNOS_FB
 
 #include <configs/exynos4-common.h>
 #ifndef CONFIG_SPL_BUILD
@@ -12,6 +13,13 @@
 #else
 #define BOOTENV
 #endif
+
+
+/* Console configuration */
+#define EXYNOS_DEVICE_SETTINGS \
+		"stdin=serial\0" \
+		"stdout=serial,vidconsole\0" \
+		"stderr=serial,vidconsole\0"
 
 /* Cache disabled */
 #define CONFIG_SYS_L2CACHE_OFF
@@ -111,6 +119,7 @@
 	"kernel_addr_r=0x41000000\0" \
 	"fdt_high=0x49000000\0" \
 	"initrd_high=0xffffffffffffffff\0" \
+	EXYNOS_DEVICE_SETTINGS \
 	BOOTENV
 
 #include <linux/sizes.h>
