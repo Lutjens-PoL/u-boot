@@ -683,6 +683,7 @@ static int exynos_fb_probe(struct udevice *dev)
 		debug("%s: No video bridge, or no backlight on bridge\n",
 		      __func__);
 		exynos_pinmux_config(PERIPH_ID_PWM0, 0);
+		exynos_pinmux_config(PERIPH_ID_PWM1, 0);
 	}
 
 	uc_priv->xsize = priv->vl_col;
