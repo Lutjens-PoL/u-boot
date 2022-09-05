@@ -16,7 +16,11 @@
 #include <asm/gpio.h>
 #include <fdt_support.h>
 #include <linux/libfdt.h>
+#include <power/pmic.h>
 #include <power/regulator.h>
+#include <power/max77686_pmic.h>
+#include <usb.h>
+#include <usb/dwc2_udc.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -92,6 +96,37 @@ int exynos_early_init_f(void)
 	}
 
 	return 0;
+}
+
+static int p4note_phy_control(int on)
+{
+	struct udevice *dev;
+	int ret;
+
+	ret = regulator_get_by_platname("VUOTG_3.0V", &dev);
+	if (ret) {
+		pr_err("Regulator get error: %d\n", ret);
+		return ret;
+	}
+
+	if (on)
+		return regulator_set_mode(dev, OPMODE_ON);
+	else
+		return regulator_set_mode(dev, OPMODE_LPM);
+}
+
+struct dwc2_plat_otg_data exynos4_otg_data = {
+	.phy_control = p4note_phy_control,
+	.regs_phy = EXYNOS4X12_USBPHY_BASE,
+	.regs_otg = EXYNOS4X12_USBOTG_BASE,
+	.usb_phy_ctrl = EXYNOS4X12_USBPHY_CONTROL,
+	.usb_flags = PHY0_SLEEP,
+};
+
+int board_usb_init(int index, enum usb_init_type init)
+{
+	pr_info("Board usb init! %d %d\n", index, init);
+	return dwc2_udc_probe(&exynos4_otg_data);
 }
 
 int exynos_init(void)
