@@ -46,6 +46,18 @@
 
 #define EXYNOS_COPY_SPI_FNPTR_ADDR	0x02020058
 #define SPI_FLASH_UBOOT_POS	(SEC_FW_SIZE + BL1_SIZE)
+
+#elif defined(CONFIG_TARGET_P4NOTE)
+#define RES_BLOCK_SIZE (512)
+#define BL1_SIZE (8 << 10) /* 8K for BL1 */
+#define SPL_SIZE (16 << 10) /* 14K for SPL (BL2). 4 byte checksum. Padded to 16K */
+#define BL2_SIZE (1024 << 10) /* 1024K u-boot */
+
+#define BL1_OFFSET	(RES_BLOCK_SIZE)
+#define BL2_OFFSET (BL1_OFFSET + BL1_SIZE + SPL_SIZE)
+
+#define BL2_START_OFFSET (BL2_OFFSET/512)
+#define BL2_SIZE_BLOC_COUNT (BL2_SIZE/512)
 #elif defined(CONFIG_ARCH_EXYNOS4)
 #define COPY_BL2_SIZE		0x80000
 #define BL2_START_OFFSET	((CONFIG_ENV_OFFSET + CONFIG_ENV_SIZE)/512)
