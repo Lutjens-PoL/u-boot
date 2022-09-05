@@ -36,19 +36,6 @@ static void gpio_init(void)
 	gpio_set_pull(EXYNOS4X12_GPIO_X27, S5P_GPIO_PULL_NONE);
 }
 
-#ifdef CONFIG_DEBUG_UART_BOARD_INIT
-void board_debug_uart_init(void)
-{
-	/*
-   * configure uart_sel pin to get UART output.
-   * We have to configure it here to get more info on boot
-   */
-	gpio_cfg_pin(EXYNOS4X12_GPIO_L27, S5P_GPIO_OUTPUT);
-	gpio_set_pull(EXYNOS4X12_GPIO_L27, S5P_GPIO_PULL_NONE);
-  gpio_set_value(EXYNOS4X12_GPIO_L27, 1);
-}
-#endif
-
 #ifdef CONFIG_OF_BOARD_SETUP
 int ft_board_setup(void *blob, struct bd_info *bd)
 {

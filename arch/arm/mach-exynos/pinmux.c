@@ -806,6 +806,12 @@ static void exynos4x12_uart_config(int peripheral)
 		gpio_set_pull(i, S5P_GPIO_PULL_NONE);
 		gpio_cfg_pin(i, S5P_GPIO_FUNC(0x2));
 	}
+
+	#ifdef CONFIG_TARGET_P4NOTE
+	gpio_cfg_pin(EXYNOS4X12_GPIO_L27, S5P_GPIO_OUTPUT);
+	gpio_set_pull(EXYNOS4X12_GPIO_L27, S5P_GPIO_PULL_NONE);
+	gpio_set_value(EXYNOS4X12_GPIO_L27, 1);
+	#endif
 }
 
 static int exynos4_pinmux_config(int peripheral, int flags)
