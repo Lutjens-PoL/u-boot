@@ -59,6 +59,11 @@ static int get_boot_mmc_dev(void)
 	if (mode == 0x04)
 		return 2; /* MMC2: SD */
 
+	if (mode == 0x08)
+		return 2; /* MMC2: EMMC SD */
+
+	printf("mode: (%x)\n", mode);
+
 	/* MMC0: eMMC or unknown */
 	return 0;
 }

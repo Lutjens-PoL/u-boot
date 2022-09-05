@@ -159,10 +159,6 @@ int exynos_init(void)
 
 int exynos_late_init(void)
 {
-	/* simple hack for now to boot from sd card */
-  printf("Boot device: MMC(%u)\n", 2);
-	env_set("mmcbootdev", "2");
-
 	printf("Booting...\n");
 
 	return 0;
