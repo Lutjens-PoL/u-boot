@@ -1,19 +1,7 @@
 #ifndef __P4NOTE_CONFIG_H__
 #define __P4NOTE_CONFIG_H__
 
-#define CONFIG_EXYNOS4
-#define CONFIG_EXYNOS_FB
-
 #include <configs/exynos4-common.h>
-#ifndef CONFIG_SPL_BUILD
-#define BOOT_TARGET_DEVICES(func) \
-	func(MMC, mmc, 2) \
-	func(MMC, mmc, 0)
-#include <config_distro_bootcmd.h>
-#else
-#define BOOTENV
-#endif
-
 
 /* Console configuration */
 #define EXYNOS_DEVICE_SETTINGS \
@@ -21,49 +9,28 @@
 		"stdout=serial,vidconsole\0" \
 		"stderr=serial,vidconsole\0"
 
-/* Cache disabled */
-#define CONFIG_SYS_L2CACHE_OFF
 #ifndef CONFIG_SYS_L2CACHE_OFF
 #define CONFIG_SYS_L2_PL310
-#define CONFIG_SYS_PL310_BASE	0x10502000
+#define CONFIG_SYS_PL310_BASE		0x10502000
 #endif
 
-#define CONFIG_MISC_COMMON
-#define CONFIG_MISC_INIT_R
-#define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
-#define CONFIG_REVISION_TAG
-
 /* 2GB of DRAM */
-#define CONFIG_SYS_SDRAM_BASE 0x40000000
-#define SDRAM_BANK_SIZE (256 << 20) /*0x40000000 * 1GB */ /* 256MB */
-#define PHYS_SDRAM_1 CONFIG_SYS_SDRAM_BASE
+#define CONFIG_SYS_SDRAM_BASE		0x40000000
+#define SDRAM_BANK_SIZE 			(256 << 20) /*0x40000000 * 1GB */ /* 256MB */
+#define PHYS_SDRAM_1 				CONFIG_SYS_SDRAM_BASE
 
 /* Enable SPL */
 #define CONFIG_EXYNOS_SPL
-#define CONFIG_SPL_STACK 0x02050000
-#define CONFIG_IRAM_TOP 0x02050000
-#define CONFIG_SYS_INIT_SP_ADDR 0x02050000
-#define CONFIG_SPL_MAX_FOOTPRINT ((14 << 10) - 4)
+#define CONFIG_SPL_STACK 			0x02050000
+#define CONFIG_IRAM_TOP 			0x02050000
+#define CONFIG_SYS_INIT_SP_ADDR 	0x02050000
+#define CONFIG_SPL_MAX_FOOTPRINT	((14 << 10) - 4)
 
-/*
- * SD boot: note that this is not used when booting off the eMMC.
- * 512b reserved
- * 8K BL1
- * 14K SPL, padded to 16K
- * 1024K u-boot (?)
- */
-#define CONFIG_RES_BLOCK_SIZE (512)
-#define CONFIG_BL1_SIZE (8 << 10) /* 8K for BL1 */
-#define CONFIG_SPL_SIZE (16 << 10) /* 14K for SPL (BL2). 4 byte checksum. Padded to 16K */
-#define CONFIG_BL2_SIZE (1024 << 10) /* 1024K u-boot */
+#define BOOT_TARGET_DEVICES(func) \
+	func(MMC, mmc, 2) \
+	func(MMC, mmc, 0)
 
-#define CONFIG_BL2_OFFSET (CONFIG_RES_BLOCK_SIZE + CONFIG_BL1_SIZE + CONFIG_SPL_SIZE)
-
-#define BL2_START_OFFSET (CONFIG_BL2_OFFSET/512)
-#define BL2_SIZE_BLOC_COUNT (CONFIG_BL2_SIZE/512)
-
-/* Boot off EMMC */
-#define CONFIG_SUPPORT_EMMC_BOOT
+#include <config_distro_bootcmd.h>
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"loadbootscript=load mmc ${mmcbootdev}:${mmcbootpart} ${scriptaddr} " \
@@ -122,8 +89,14 @@
 	EXYNOS_DEVICE_SETTINGS \
 	BOOTENV
 
-#include <linux/sizes.h>
+#define CONFIG_EXYNOS_FB
 
-#define CONFIG_BAUDRATE		115200
+/* Security subsystem - enable hw_rand() */
+#define CONFIG_EXYNOS_ACE_SHA
+
+/* Common misc for Samsung */
+#define CONFIG_MISC_COMMON
+
+#include <linux/sizes.h>
 
 #endif
