@@ -6,7 +6,7 @@
  */
 
 /{
-	pinctrl_0: pinctrl@11400000 {
+	gpio_0: gpio@11400000 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		gpf0: gpf0 {
@@ -17,7 +17,7 @@
 		};
 	};
 
-	pinctrl_1: pinctrl@11000000 {
+	gpio_1: gpio@11000000 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		gpk0: gpk0 {
@@ -31,10 +31,10 @@
 		};
 	};
 
-	pinctrl_2: pinctrl@03860000 {
+	gpio_2: gpio@03860000 {
 	};
 
-	pinctrl_3: pinctrl@106E0000 {
+	gpio_3: gpio@106E0000 {
 	};
 
 };
