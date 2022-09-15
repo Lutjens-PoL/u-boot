@@ -29,17 +29,6 @@ int get_board_rev(void)
 	return 0;
 }
 
-static void gpio_init(void)
-{
-	/* power and volume keys are externally pulled up */
-	/*
-	 * GPX2[7] - power key. If we don't set pull to none within 8 seconds,
-	 * PMIC thinks power key is being held down and will reset the board.
-	 */
-	gpio_request(EXYNOS4X12_GPIO_X27, "KEY_POWER");
-	gpio_set_pull(EXYNOS4X12_GPIO_X27, S5P_GPIO_PULL_NONE);
-}
-
 #ifdef CONFIG_OF_BOARD_SETUP
 int ft_board_setup(void *blob, struct bd_info *bd)
 {
@@ -73,28 +62,6 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 
 int exynos_early_init_f(void)
 {
-
-	unsigned int i;
-
-	/* lcd_clk & lcd_data24 */
-	for (i = 0; i < 8; i++) {
-		gpio_cfg_pin(EXYNOS4X12_GPIO_F00 + i, S5P_GPIO_FUNC(2));
-		gpio_set_pull(EXYNOS4X12_GPIO_F00 + i, S5P_GPIO_PULL_NONE);
-		gpio_set_drv(EXYNOS4X12_GPIO_F00 + i, S5P_GPIO_DRV_1X);
-		gpio_cfg_pin(EXYNOS4X12_GPIO_F10 + i, S5P_GPIO_FUNC(2));
-		gpio_set_pull(EXYNOS4X12_GPIO_F10 + i, S5P_GPIO_PULL_NONE);
-		gpio_set_drv(EXYNOS4X12_GPIO_F10 + i, S5P_GPIO_DRV_1X);
-		gpio_cfg_pin(EXYNOS4X12_GPIO_F20 + i, S5P_GPIO_FUNC(2));
-		gpio_set_pull(EXYNOS4X12_GPIO_F20 + i, S5P_GPIO_PULL_NONE);
-		gpio_set_drv(EXYNOS4X12_GPIO_F20 + i, S5P_GPIO_DRV_1X);
-	}
-
-	for (i = 0; i < 4; i++) {
-		gpio_cfg_pin(EXYNOS4X12_GPIO_F30 + i, S5P_GPIO_FUNC(2));
-		gpio_set_pull(EXYNOS4X12_GPIO_F30 + i, S5P_GPIO_PULL_NONE);
-		gpio_set_drv(EXYNOS4X12_GPIO_F30 + i, S5P_GPIO_DRV_1X);
-	}
-
 	return 0;
 }
 
@@ -131,8 +98,6 @@ int board_usb_init(int index, enum usb_init_type init)
 
 int exynos_init(void)
 {
-	gpio_init();
-
   int ret;
   struct udevice *vddadc;
 
